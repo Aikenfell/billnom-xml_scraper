@@ -7,7 +7,7 @@ import time
 
 retDict = {}
 
-
+i = 0
 for num in range(1000,1500):
     print(num)
 
@@ -44,6 +44,7 @@ for num in range(1000,1500):
     #     XMLresponse = f.read()
     Stage2 = BeautifulSoup(XMLresponse.text, 'xml')
 
+    i+=1
     for tag in Stage2.find_all('BILL_RESULT'):
         BID = tag.find('FILE_TYPE').text+tag.find('FILE_NUMBER').text
 
@@ -62,7 +63,14 @@ for num in range(1000,1500):
 
         retDict.update({BID : tempDict})
 
-        time.sleep(2)
+    time.sleep(1)
+    if i >= 50:
+        with open("BillData"+str(i)+".json", "w") as outfile:
+            json.dump(retDict, outfile, indent=4)
+            retDict = {}
+            i = 0
+
+
     # with open('Stage3.html', 'w') as f:
     #     f.write(HTMLresponse.text) 
 
